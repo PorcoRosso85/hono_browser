@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script type="module">
+      import { Hono } from "https://esm.sh/hono";
+      import { logger } from "https://esm.sh/hono/logger";
+      import { poweredBy } from "https://esm.sh/hono/powered-by";
+
+      const app = new Hono();
+      app.use("*", logger());
+      app.use("*", poweredBy());
+
+      const dispatch = async () => {
+        const app = new Hono();
+        app.get("/", (c) => c.text("Hello Hono"));
+        const res = await app.request("/");
+        document.getElementById("result").innerText = await res.text();
+      };
+      dispatch();
+    </script>
+  </head>
+  <body>
+    <div id="result"></div>
+    <button hx-get="/hello.html" hx-swap="innerHTML">me</button>
+  </body>
+</html>
